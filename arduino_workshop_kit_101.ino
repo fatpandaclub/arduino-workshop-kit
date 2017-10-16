@@ -1,6 +1,5 @@
 #include <Servo.h>
 
-
 // TINKERKIT DEFINITIONS (ignore this)
 #define I0 A0
 #define I1 A1
@@ -21,22 +20,22 @@
 const int usTrigPin = 20;
 const int usEchoPin = 21;
 
-// Vibration module
-const int vibrationPin = O0;
-
 // Accelerometer module
 const int accelerometerXpin = I0;
 const int accelerometerYpin = I1;
-
-// LED modules
-const int ledPin1 = O1;
-const int ledPin2 = O2;
 
 // Microphone module
 const int microphonePin = I2;
 
 // Potentiometer module
 const int potentiometerPin = I3;
+
+// Vibration module
+const int vibrationPin = O0;
+
+// LED modules
+const int ledPin1 = O1;
+const int ledPin2 = O2;
 
 // Servo modules
 const int servoPin1 = O3;
@@ -47,40 +46,42 @@ Servo servo2;
 
 // FUNCTION PROTOTYPES (ignore this)
 int readUltrasonicSensor();
-void vibrate(int duration);
 int readAccelerometerXposition();
 int readAccelerometerYposition();
-void turnOnLED(int led, int duration);
-int readPotentiometer();
-void moveServo(Servo servo, int startPos, int endPos, int tempo);
 float readSoundLevel();
+int readPotentiometer();
+
+void vibrate(int duration);
+void turnOnLED(int led, int duration);
+void moveServo(Servo servo, int startPos, int endPos, int tempo);
+
 
 void setup() {
   
   // Start the serial communication
   Serial.begin(9600); 
   
-  // SET PINMODES
+  // SET PINMODES (you can ignore this)
   // Ultrasonic sensor
   pinMode(usTrigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(usEchoPin, INPUT); // Sets the echoPin as an Input
 
-  // Vibration module
-  pinMode(vibrationPin, OUTPUT);
-
   // Accelerometer module
   pinMode(accelerometerXpin, INPUT);
   pinMode(accelerometerYpin, INPUT);
-
-  // LED modules
-  pinMode(ledPin1, OUTPUT);
-  pinMode(ledPin2, OUTPUT);
 
   // Microphone module
   pinMode(microphonePin, INPUT);
 
   // Potentiometer module
   pinMode(potentiometerPin, INPUT);
+  
+  // Vibration module
+  pinMode(vibrationPin, OUTPUT);
+
+  // LED modules
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
 
   // Servo modules
   servo1.attach(servoPin1);
@@ -89,11 +90,7 @@ void setup() {
 }
 
 void loop() {
-
-  float val = readSoundLevel();
-  Serial.println(val);
-
-  delay(1000);
+  // WRITE YOUR CODE HERE :)
 }
 
 /*
