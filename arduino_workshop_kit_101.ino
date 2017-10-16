@@ -1,3 +1,5 @@
+#include <Servo.h>
+
 
 // TINKERKIT DEFINITIONS (ignore this)
 #define I0 A0
@@ -33,6 +35,13 @@ const int ledPin2 = O2;
 // Potentiometer module
 const int potentiometerPin = I3;
 
+// Servo modules
+const int servoPin1 = O3;
+const int servoPin2 = O4; 
+
+Servo servo1;
+Servo servo2;
+
 // FUNCTION PROTOTYPES (ignore this)
 int readUltrasonicSensor();
 void vibrate(int duration);
@@ -40,6 +49,8 @@ int readAccelerometerXposition();
 int readAccelerometerYposition();
 void turnOnLED(int led, int duration);
 int readPotentiometer();
+void moveServo(Servo servo, int startPos, int endPos, int tempo);
+
 
 void setup() {
   
@@ -64,6 +75,10 @@ void setup() {
 
   // Potentiometer module
   pinMode(potentiometerPin, INPUT);
+
+  // Servo modules
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
 
 }
 
@@ -157,3 +172,30 @@ int readPotentiometer() {
   potentiometerPos = map(potentiometerPos, 5, 910, 0, 100);
   return potentiometerPos;
 }
+
+
+/*
+ *  Move a servo motor
+ *  
+ *  @param Servo servoToMove : The servo to move
+ *  @param int startPos : The position the servo will start moving from
+ *  @param int endPos : The position the servo will end in
+ *  @param int wait : The wait time in milliseconds between the movement
+ */
+void moveServo(Servo servoToMove, int startPos, int endPos, int wait) {
+
+  if(startPos < endPos) {
+    for (int pos = startPos; pos <= endPos; pos++) { // goes from 0 degrees to 180 degrees
+      servoToMove.write(pos);              // tell servo to go to position in variable 'pos'
+      delay(wait);                       // waits 15ms for the servo to reach the position
+    }
+  } else {
+    for (int pos = startPos; pos >= endPos; pos--) { // goes from 0 degrees to 180 degrees
+      servoToMove.write(pos);              // tell servo to go to position in variable 'pos'
+      delay(wait);                       // waits 15ms for the servo to reach the position
+    }
+  }
+
+}
+
+
