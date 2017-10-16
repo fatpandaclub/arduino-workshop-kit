@@ -30,12 +30,16 @@ const int accelerometerYpin = I1;
 const int ledPin1 = O1;
 const int ledPin2 = O2;
 
+// Potentiometer module
+const int potentiometerPin = I3;
+
 // FUNCTION PROTOTYPES (ignore this)
 int readUltrasonicSensor();
 void vibrate(int duration);
 int readAccelerometerXposition();
 int readAccelerometerYposition();
 void turnOnLED(int led, int duration);
+int readPotentiometer();
 
 void setup() {
   
@@ -58,11 +62,12 @@ void setup() {
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
 
+  // Potentiometer module
+  pinMode(potentiometerPin, INPUT);
+
 }
 
 void loop() {
-  turnOnLED(2, 2000);
-  delay(500);
 }
 
 /*
@@ -140,4 +145,15 @@ void turnOnLED(int led, int duration) {
   digitalWrite(ledPin, HIGH);
   delay(duration);
   digitalWrite(ledPin, LOW);
+}
+
+/*
+ * Reads the potentiometer position and maps it to a value between 0-100
+ * 
+ * @return int : The potentiometer value (between 0-100)
+ */
+int readPotentiometer() {
+  int potentiometerPos = analogRead(potentiometerPin);
+  potentiometerPos = map(potentiometerPos, 5, 910, 0, 100);
+  return potentiometerPos;
 }
