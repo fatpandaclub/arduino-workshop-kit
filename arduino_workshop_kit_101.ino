@@ -32,6 +32,9 @@ const int accelerometerYpin = I1;
 const int ledPin1 = O1;
 const int ledPin2 = O2;
 
+// Microphone module
+const int microphonePin = I2;
+
 // Potentiometer module
 const int potentiometerPin = I3;
 
@@ -50,7 +53,7 @@ int readAccelerometerYposition();
 void turnOnLED(int led, int duration);
 int readPotentiometer();
 void moveServo(Servo servo, int startPos, int endPos, int tempo);
-
+float readSoundLevel();
 
 void setup() {
   
@@ -73,6 +76,9 @@ void setup() {
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
 
+  // Microphone module
+  pinMode(microphonePin, INPUT);
+
   // Potentiometer module
   pinMode(potentiometerPin, INPUT);
 
@@ -83,6 +89,11 @@ void setup() {
 }
 
 void loop() {
+
+  float val = readSoundLevel();
+  Serial.println(val);
+
+  delay(1000);
 }
 
 /*
@@ -195,7 +206,36 @@ void moveServo(Servo servoToMove, int startPos, int endPos, int wait) {
       delay(wait);                       // waits 15ms for the servo to reach the position
     }
   }
-
 }
 
+/*
+ * Reads the microphone for 250ms and converts the reading to a usable level
+ * 
+ * @return float : The current soundlevel
+ */
+float readSoundLevel() {
+  const int sampleWindow = 250; // Sample window width in mS (250 mS = 4Hz)
+  unsigned int knock;
+  
+  unsigned long start = millis();  // Start of sample window
+  unsigned int peakToPeak = 0;   // peak-to-peak level
+
+  unsigned int signalMax = 0;
+  unsigned int signalMin = 1024;
+
+  while (millis() - start < sampleWindow) {
+    knock = analogRead(microphonePin);
+    if (knock < 1024) {
+      if (knock > signalMax) {
+        signalMax = knock;  // save just the max levels
+      } else if (knock < signalMin) {
+        signalMin = knock;  // save just the min levels
+      }
+    }
+  }
+  peakToPeak = signalMax - signalMin;  // max - min = peak-peak amplitude
+  float volts = (peakToPeak * 3.3) / 1024;  // convert to volts
+
+  return volts;
+}
 
